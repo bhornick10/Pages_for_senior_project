@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Insight - Because context matters</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    html,body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden; /* prevents scrollbars */
+    }
+    #background-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+      object-fit: cover;  /* fills the screen properly */
+      background: #000;   /* fallback background color */
+    }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0 auto;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.7);
+    }
+    .brand b {
+      font-size: 5em;
+      font-weight: bold;
+      text-align: center;
+    }
+    .brand p {
+      font-size: 2em;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- background video (autoplays muted inline on mobile) -->
+  <video id="background-video" autoplay loop muted playsinline webkit-playsinline>
+    <source src="Falling_Matrix_Code.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <header>
+    <div class="container nav" style="text-align: center;">
+      <div class="brand">
+        <b>Insight</b>
+        <p>Because context matters</p>
+      </div>
+    </div>
+  </header>
+
+  <main></main>
+  <footer></footer>
+</body>
+</html>

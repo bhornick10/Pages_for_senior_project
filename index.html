@@ -5,10 +5,11 @@
   <title>Insight - Because context matters</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
+    
     html,body {
       margin: 0;
       height: 100%;
-      overflow: hidden; /* prevents scrollbars */
+      overflow: auto;
     }
     /* Background image for the entire page */
     body {
@@ -23,13 +24,12 @@
       position: fixed;
       right: 0;
       bottom: 0;
-      width: 50%; /* Make video take up 50% of screen width */
-      height: 50%; /* Make video take up 50% of screen height */
+      width: 50%; 
+      height: 50%;
       z-index: -1;
       
       object-fit: contain; /* what do the different values do? */
-      /* object-fit: cover;  fill the container, cropping if necessary */
-      /* object-fit: contain; fit inside the container, letterboxing if necessary */
+
 
       background: transparent; /* Make video background transparent so body background shows through */
     }

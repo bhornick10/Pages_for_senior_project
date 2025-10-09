@@ -83,34 +83,5 @@
     crossorigin="anonymous"
   ></video>
 
-  
-
-    const video = document.getElementById('background-video');
-    // Minimal autoplay assist (keeps controls for manual play if blocked)
-    video.addEventListener('canplay', () => {
-      video.play().catch(() => {});
-    });
-          .catch(e => { setStatus('click play ▶'); log('❌ retry play failed', e?.name || e); });
-      });
-    }
-    
-    // Check video source accessibility
-  fetch('./news_test_app_10-9-25.mp4', { method: 'HEAD' })
-      .then(response => {
-    log('📁 HEAD status=', response.status, 'type=', response.headers.get('content-type'), 'bytes=', response.headers.get('content-length'));
-      })
-      .catch(e => {
-    log('❌ HEAD failed with ./ prefix', e?.name || e);
-    log('🔄 Trying without ./ prefix...');
-        
-    fetch('news_test_app_10-9-25.mp4', { method: 'HEAD' })
-          .then(response => {
-      log('📁 HEAD (no prefix) status=', response.status);
-          })
-          .catch(e2 => {
-      log('❌ HEAD failed (no prefix)', e2?.name || e2);
-          });
-      });
-  </script>
 </body>
 </html>

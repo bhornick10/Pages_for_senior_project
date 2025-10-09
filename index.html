@@ -25,8 +25,8 @@
       position: fixed;
       right: 20px;
       bottom: 20px;
-      width: 200px; 
-      height: 200px;
+      width: 300px; 
+      height: 300px;
       z-index: 20; /* Higher z-index to make sure it's visible */
       object-fit: contain; /* Changed to contain so we can see the full video */
       border-radius: 10px; 
@@ -62,9 +62,10 @@
 <body>
   <!-- background video (autoplays muted inline on mobile) -->
   <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto">
+    <source src="./news_test_app_10-9-25.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
     <source src="./news_test_app_10-9-25.mp4" type="video/mp4">
-    <p>Your browser does not support the video tag.</p>
-    <p>Video file: news_test_app_10-9-25.mp4</p>
+    <source src="./news_test_app_10-9-25.webm" type="video/webm">
+    <p>Chrome extension video - may need conversion to web format</p>
   </video>
 
   <header>

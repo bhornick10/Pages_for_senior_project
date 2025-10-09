@@ -15,9 +15,10 @@
     body {
       background-image: url('news_app.png');
       background-size: contain;
-      background-position: center;
+      background-position: left center; /* Move background to left so video on right is more visible */
       background-repeat: no-repeat;
-      background-attachment:scroll;
+      background-attachment: scroll;
+      background-color: #1a1a2e; /* Add dark background color for better contrast */
     }
     
     #background-video {
@@ -26,12 +27,10 @@
       bottom: 0;
       width: 50%; 
       height: 50%;
-      z-index: -1;
-      
-      object-fit: inherit; /* what do the different values do? */
-
-
-      background: transparent; /* Make video background transparent so body background shows through */
+      z-index: 1; /* Changed from -1 to 1 so video shows above background */
+      object-fit: cover; /* Changed from inherit to cover for better video display */
+      border-radius: 10px; /* Add some styling */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* Add shadow for better visibility */
     }
     .brand {
       display: flex;
@@ -42,6 +41,8 @@
       margin: 0 auto;
       color: #fff;
       text-shadow: 0 2px 8px rgba(0,0,0,.7);
+      z-index: 2; /* Make sure text appears above video */
+      position: relative;
     }
     .brand b {
       font-size: 5em;

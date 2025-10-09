@@ -23,16 +23,17 @@
     
     #background-video {
       position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 300px; 
-      height: 300px;
-      z-index: 20; /* Higher z-index to make sure it's visible */
-      object-fit: contain; /* Changed to contain so we can see the full video */
-      border-radius: 10px; 
-      box-shadow: 0 4px 20px rgba(0,0,0,0.8); 
-      border: 3px solid #fff; /* Thicker white border */
-      background: #000; /* Black background in case video doesn't load */
+      right: 50%;
+      top: 50%;
+      transform: translate(50%, -50%); /* Center it perfectly */
+      width: 400px; 
+      height: 600px;
+      z-index: 20;
+      object-fit: cover; /* Fill the area completely */
+      border-radius: 15px; 
+      box-shadow: 0 8px 30px rgba(0,0,0,0.8); 
+      border: 2px solid rgba(255,255,255,0.3);
+      background: #2a2a4a; /* Match the blue background better */
     }
     .brand {
       display: flex;
@@ -61,11 +62,12 @@
 </head>
 <body>
   <!-- background video (autoplays muted inline on mobile) -->
-  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto">
-    <source src="./news_test_app_10-9-25.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
-    <source src="./news_test_app_10-9-25.mp4" type="video/mp4">
-    <source src="./news_test_app_10-9-25.webm" type="video/webm">
-    <p>Chrome extension video - may need conversion to web format</p>
+  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="metadata">
+    <source src="./news_test_app_web.mp4" type="video/mp4">
+    <p style="color: white; padding: 20px; text-align: center;">
+      Video not loading? Chrome extension recordings often need conversion.<br>
+      Try converting to web-compatible MP4 using VLC or HandBrake.
+    </p>
   </video>
 
   <header>

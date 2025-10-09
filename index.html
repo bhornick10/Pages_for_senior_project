@@ -4,495 +4,410 @@
   <meta charset="utf-8" />
   <title>Insight - Because Context Matters</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Insight - Professional news analysis platform that provides contextual information" />
+  <meta name="description" content="Insight - Professional news analysis platform" />
   
-  <!-- Google Fonts for Professional Typography -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    /* CSS Reset and Base Styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    :root {
-      /* Professional Color Palette */
-      --primary-color: #1a1a2e;
-      --secondary-color: #16213e;
-      --accent-color: #0f3460;
-      --gold-accent: #d4af37;
-      --text-light: #ffffff;
-      --text-dark: #2c2c2c;
-      --text-muted: #6b7280;
-      --bg-overlay: rgba(26, 26, 46, 0.85);
-      --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-      
-      /* Typography */
-      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-display: 'Playfair Display', serif;
-      
-      /* Spacing */
-      --spacing-xs: 0.5rem;
-      --spacing-sm: 1rem;
-      --spacing-md: 2rem;
-      --spacing-lg: 4rem;
-      --spacing-xl: 6rem;
-      
-      /* Shadows */
-      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
-      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
-      font-family: var(--font-primary);
+      font-family: 'Inter', sans-serif;
       line-height: 1.6;
-      color: var(--text-light);
-      overflow-x: hidden;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
     }
 
-    /* Background Video Styling */
-    #background-video {
+    /* Professional Background Pattern */
+    body::before {
+      content: '';
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      z-index: -2;
-    }
-
-    .video-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--bg-overlay);
+      background-image: 
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
+      background-size: 20px 20px;
       z-index: -1;
     }
 
-    /* Navigation */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: var(--spacing-sm) 0;
-      background: rgba(26, 26, 46, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      transition: all 0.3s ease;
-    }
-
-    .navbar.scrolled {
-      padding: var(--spacing-xs) 0;
-      background: rgba(26, 26, 46, 0.98);
-      box-shadow: var(--shadow-md);
-    }
-
-    .nav-container {
+    .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 var(--spacing-md);
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      padding: 20px 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      font-family: var(--font-display);
       font-size: 2rem;
       font-weight: 700;
-      color: var(--text-light);
+      color: white;
       text-decoration: none;
-      transition: color 0.3s ease;
     }
 
-    .logo:hover {
-      color: var(--gold-accent);
-    }
-
-    .nav-menu {
+    .nav-links {
       display: flex;
+      gap: 30px;
       list-style: none;
-      gap: var(--spacing-md);
     }
 
-    .nav-link {
-      color: var(--text-light);
+    .nav-links a {
+      color: white;
       text-decoration: none;
       font-weight: 500;
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border-radius: 6px;
-      transition: all 0.3s ease;
-      position: relative;
+      transition: opacity 0.3s;
     }
 
-    .nav-link:hover {
-      color: var(--gold-accent);
-      background: rgba(212, 175, 55, 0.1);
+    .nav-links a:hover {
+      opacity: 0.8;
     }
 
-    .cta-button {
-      background: var(--gradient-primary);
-      color: var(--text-light);
-      padding: var(--spacing-xs) var(--spacing-md);
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--gold-accent);
-    }
-
-    /* Hero Section */
-    .hero {
-      height: 100vh;
-      display: flex;
+    /* Main Content */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
+      min-height: 80vh;
+      gap: 60px;
+      padding: 60px 0;
     }
 
-    .hero-content {
-      max-width: 800px;
-      padding: 0 var(--spacing-md);
-      animation: fadeInUp 1s ease-out;
+    .content-left {
+      color: white;
     }
 
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 8vw, 6rem);
+    .content-left h1 {
+      font-size: 3.5rem;
       font-weight: 700;
-      margin-bottom: var(--spacing-md);
-      background: linear-gradient(135deg, var(--text-light) 0%, var(--gold-accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      margin-bottom: 20px;
       line-height: 1.1;
     }
 
-    .hero-subtitle {
-      font-size: clamp(1.2rem, 3vw, 2rem);
-      font-weight: 300;
-      margin-bottom: var(--spacing-lg);
-      color: rgba(255, 255, 255, 0.9);
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+    .content-left p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+      line-height: 1.6;
     }
 
-    .hero-buttons {
-      display: flex;
-      gap: var(--spacing-md);
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: var(--spacing-lg);
+    .download-section {
+      margin-top: 40px;
     }
 
-    .btn-primary {
-      background: var(--gradient-primary);
-      color: var(--text-light);
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border-radius: 50px;
-      text-decoration: none;
+    .download-title {
+      font-size: 1.5rem;
       font-weight: 600;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
+      margin-bottom: 20px;
+    }
+
+    .download-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .download-btn {
       display: inline-flex;
       align-items: center;
-      gap: var(--spacing-xs);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--gold-accent);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text-light);
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50px;
+      gap: 10px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
       text-decoration: none;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 1.1rem;
       transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       backdrop-filter: blur(10px);
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--gold-accent);
-      transform: translateY(-3px);
+    .download-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
-    /* Scroll Indicator */
-    .scroll-indicator {
-      position: absolute;
-      bottom: var(--spacing-md);
-      left: 50%;
-      transform: translateX(-50%);
-      animation: bounce 2s infinite;
-    }
-
-    .scroll-arrow {
+    .download-btn img {
       width: 24px;
       height: 24px;
-      border: 2px solid var(--text-light);
-      border-top: none;
-      border-left: none;
-      transform: rotate(45deg);
-      opacity: 0.7;
     }
 
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* App Preview */
+    .content-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateX(-50%) translateY(0);
-      }
-      40% {
-        transform: translateX(-50%) translateY(-10px);
-      }
-      60% {
-        transform: translateX(-50%) translateY(-5px);
-      }
+    .app-preview {
+      position: relative;
+      max-width: 400px;
+      width: 100%;
     }
 
-    /* Mobile Menu Toggle */
-    .mobile-menu-toggle {
-      display: none;
+    .phone-mockup {
+      width: 100%;
+      background: #1a1a1a;
+      border-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .screen {
+      width: 100%;
+      aspect-ratio: 9/16;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 15px;
+      display: flex;
       flex-direction: column;
-      cursor: pointer;
-      padding: var(--spacing-xs);
+      overflow: hidden;
+      position: relative;
     }
 
-    .hamburger-line {
-      width: 25px;
-      height: 3px;
-      background: var(--text-light);
-      margin: 3px 0;
-      transition: 0.3s;
-      border-radius: 2px;
+    .app-header {
+      background: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .app-content {
+      flex: 1;
+      padding: 20px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .news-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #4a90e2;
+    }
+
+    .news-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .news-summary {
+      font-size: 0.8rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .context-tag {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* Features Section */
+    .features {
+      text-align: center;
+      margin-top: 60px;
+      color: white;
+    }
+
+    .features h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .feature-description {
+      opacity: 0.9;
+      line-height: 1.6;
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
-      .nav-menu {
-        position: fixed;
-        top: 70px;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 70px);
-        background: rgba(26, 26, 46, 0.98);
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        padding-top: var(--spacing-lg);
-        transition: left 0.3s ease;
-        backdrop-filter: blur(20px);
+      .nav-links {
+        display: none;
       }
 
-      .nav-menu.active {
-        left: 0;
+      .main-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
       }
 
-      .mobile-menu-toggle {
-        display: flex;
+      .content-left h1 {
+        font-size: 2.5rem;
       }
 
-      .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .btn-primary,
-      .btn-secondary {
-        width: 100%;
-        max-width: 280px;
+      .download-buttons {
         justify-content: center;
       }
-    }
 
-    @media (max-width: 480px) {
-      .nav-container {
-        padding: 0 var(--spacing-sm);
+      .features h2 {
+        font-size: 2rem;
       }
-
-      .hero-content {
-        padding: 0 var(--spacing-sm);
-      }
-    }
-
-    /* Utility Classes */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--spacing-md);
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
     }
   </style>
 </head>
 <body>
-  <!-- Background Video -->
-  <video id="background-video" autoplay loop muted playsinline webkit-playsinline>
-    <source src="Insight_vid.mp4" type="video/mp4">
-    <p>Your browser doesn't support HTML5 video.</p>
-  </video>
-  
-  <!-- Video Overlay for Better Text Readability -->
-  <div class="video-overlay"></div>
-
-  <!-- Navigation -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="#" class="logo" aria-label="Insight Home">Insight</a>
-      
-      <ul class="nav-menu" id="nav-menu">
-        <li><a href="#home" class="nav-link">Home</a></li>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#services" class="nav-link">Services</a></li>
-        <li><a href="#insights" class="nav-link">Insights</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
-        <li><a href="#demo" class="cta-button">Get Started</a></li>
-      </ul>
-
-      <div class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">Insight</a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- Hero Section -->
-  <section class="hero" id="home">
-    <div class="hero-content">
-      <h1 class="hero-title">Insight</h1>
-      <p class="hero-subtitle">
-        Empowering informed decisions through contextual news analysis and data-driven insights
-      </p>
-      
-      <div class="hero-buttons">
-        <a href="#demo" class="btn-primary">
-          <span>Explore Platform</span>
-          <span aria-hidden="true">→</span>
-        </a>
-        <a href="#about" class="btn-secondary">Learn More</a>
-      </div>
-    </div>
-
-    <div class="scroll-indicator" aria-hidden="true">
-      <div class="scroll-arrow"></div>
-    </div>
-  </section>
-
-  <!-- Main Content Placeholder -->
   <main>
-    <!-- Additional sections can be added here -->
+    <div class="container">
+      <div class="main-content">
+        <div class="content-left">
+          <h1>Insight</h1>
+          <p>Get the full picture with contextual news analysis. Our platform provides deeper understanding of current events by connecting the dots between stories, trends, and data.</p>
+          
+          <div class="download-section">
+            <h3 class="download-title">Download the App</h3>
+            <div class="download-buttons">
+              <a href="#" class="download-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                </svg>
+                App Store
+              </a>
+              <a href="#" class="download-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                </svg>
+                Google Play
+              </a>
+              <a href="#" class="download-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                </svg>
+                Web App
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-right">
+          <div class="app-preview">
+            <div class="phone-mockup">
+              <div class="screen">
+                <div class="app-header">
+                  Insight News
+                </div>
+                <div class="app-content">
+                  <div class="news-item">
+                    <div class="news-title">Global Market Update</div>
+                    <div class="news-summary">Tech stocks surge amid AI breakthrough announcements...</div>
+                    <span class="context-tag">Context: Related to 3 recent stories</span>
+                  </div>
+                  <div class="news-item">
+                    <div class="news-title">Climate Policy Changes</div>
+                    <div class="news-summary">New international agreements shape environmental future...</div>
+                    <span class="context-tag">Context: Follow-up story</span>
+                  </div>
+                  <div class="news-item">
+                    <div class="news-title">Tech Innovation Report</div>
+                    <div class="news-summary">Revolutionary developments in quantum computing...</div>
+                    <span class="context-tag">Context: Breaking news</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="features" id="features">
+        <h2>Why Choose Insight?</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3 class="feature-title">Deep Analysis</h3>
+            <p class="feature-description">Get comprehensive context and background for every news story</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3 class="feature-title">AI-Powered</h3>
+            <p class="feature-description">Advanced algorithms connect related stories and trends</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Real-time Updates</h3>
+            <p class="feature-description">Stay informed with instant notifications and breaking news</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
-
-  <!-- Footer Placeholder -->
-  <footer>
-    <!-- Footer content can be added here -->
-  </footer>
-
-  <!-- JavaScript for Interactive Features -->
-  <script>
-    // Mobile menu toggle
-    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const navbar = document.getElementById('navbar');
-
-    mobileMenuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      
-      // Animate hamburger menu
-      const lines = mobileMenuToggle.querySelectorAll('.hamburger-line');
-      lines.forEach((line, index) => {
-        line.style.transform = navMenu.classList.contains('active') 
-          ? `rotate(${index === 1 ? 0 : index === 0 ? 45 : -45}deg) ${index === 1 ? 'scaleX(0)' : ''}`
-          : '';
-      });
-    });
-
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-        
-        // Close mobile menu if open
-        navMenu.classList.remove('active');
-        const lines = mobileMenuToggle.querySelectorAll('.hamburger-line');
-        lines.forEach(line => line.style.transform = '');
-      });
-    });
-
-    // Enhanced accessibility
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        const lines = mobileMenuToggle.querySelectorAll('.hamburger-line');
-        lines.forEach(line => line.style.transform = '');
-      }
-    });
-  </script>
 </body>
 </html>

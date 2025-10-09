@@ -26,14 +26,22 @@
       right: 0; /* All the way to the right edge */
       top: 50%;
       transform: translateY(-50%);
-      width: 500px; 
-      height: 600px;
+      /* Responsive size: shrink on smaller windows, cap at original size */
+      width: clamp(260px, 32vw, 500px);
+      height: clamp(320px, 80vh, 600px);
       z-index: 20;
       object-fit: cover; /* Fill the area completely */
       border-radius: 20px; 
       /* box-shadow: 0 8px 30px rgba(17, 122, 207, 0.8); */
       border: 2px solid rgba(221, 199, 199, 0.897);
       background: #2a2a4a; /* Match the blue background better */
+    }
+
+    /* Extra safety on very short viewports */
+    @media (max-height: 650px) {
+      #background-video {
+        height: clamp(260px, 70vh, 600px);
+      }
     }
     .brand {
       display: flex;
@@ -62,15 +70,31 @@
 </head>
 <body>
   <!-- background video (autoplays muted inline on mobile) -->
-  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto" crossorigin="anonymous">
-    <source src="./news_test_app_10-9-25.mp4" type="video/mp4; codecs=avc1.42E01E,mp4a.40.2">
-    <source src="news_test_app_10-9-25.mp4" type="video/mp4">
-    <source src="./news_test_app_10-9-25.mp4" type="video/webm">
-    <p style="color: white; padding: 20px; text-align: center;">
-      Your browser cannot play this video format.<br>
-      Current file: news_test_app_10-9-25.mp4
-    </p>
-  </video>
+  <video
+    id="background-video"
+    src="news_test_app_10-9-25.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    webkit-playsinline
+    controls
+    preload="auto"
+    crossorigin="anonymous"
+  ></video>
+
+  <!-- debug log panel (bottom-left) -->
+  <div id="video-log" style="position:fixed;left:8px;bottom:8px;max-width:44vw;max-height:40vh;overflow:auto;background:rgba(0,0,0,.6);color:#e5e7eb;padding:8px 10px;border-radius:8px;font:12px/1.4 system-ui, sans-serif;z-index:9998;backdrop-filter:saturate(1.2) blur(2px)">
+    <div style="font-weight:700;margin-bottom:6px">Video debug log</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+      <button id="retry-play" style="all:unset;background:#2563eb;color:#fff;padding:4px 8px;border-radius:6px;cursor:pointer">Retry ▶</button>
+      <a href="news_test_app_10-9-25.mp4" target="_blank" style="color:#93c5fd;text-decoration:underline">Open file directly</a>
+    </div>
+    <pre id="video-log-lines" style="margin:0;white-space:pre-wrap"></pre>
+  </div>
+
+  <!-- simple status badge for quick live checks -->
+  <div id="video-status" style="position:fixed;right:8px;bottom:8px;background:rgba(0,0,0,.6);color:#fff;padding:6px 10px;border-radius:8px;font:12px/1.2 system-ui, sans-serif;z-index:9999">loading…</div>
 
   <header>
     <div class="container nav" style="text-align: center;">
@@ -85,107 +109,134 @@
   <footer></footer>
 
   <script>
-    // Enhanced video debugging
+  // Enhanced video debugging + on-screen status
     const video = document.getElementById('background-video');
+    const statusEl = document.getElementById('video-status');
+    const logBox = document.getElementById('video-log-lines');
+    const retryBtn = document.getElementById('retry-play');
+  const setStatus = (t) => statusEl && (statusEl.textContent = t);
+    const log = (...args) => {
+      const msg = args.map(x => typeof x === 'object' ? JSON.stringify(x) : String(x)).join(' ');
+      console.log(msg);
+      if (logBox) {
+        const time = new Date().toLocaleTimeString();
+        logBox.textContent += `[${time}] ${msg}\n`;
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+    };
+
+    const readyStateNames = ['HAVE_NOTHING','HAVE_METADATA','HAVE_CURRENT_DATA','HAVE_FUTURE_DATA','HAVE_ENOUGH_DATA'];
+    const networkStateNames = ['NETWORK_EMPTY','NETWORK_IDLE','NETWORK_LOADING','NETWORK_NO_SOURCE'];
     
     // More comprehensive event listeners
     video.addEventListener('loadstart', () => {
-      console.log('✅ Video loading started');
+      setStatus('loading…');
+      log('✅ loadstart');
     });
     
     video.addEventListener('loadedmetadata', () => {
-      console.log('✅ Video metadata loaded');
-      console.log('Duration:', video.duration);
-      console.log('Video dimensions:', video.videoWidth, 'x', video.videoHeight);
-      console.log('Ready state:', video.readyState);
+      setStatus('metadata loaded');
+      log('✅ loadedmetadata duration=', video.duration, 'size=', video.videoWidth+'x'+video.videoHeight, 'readyState=', readyStateNames[video.readyState] || video.readyState);
     });
     
     video.addEventListener('loadeddata', () => {
-      console.log('✅ Video data loaded');
+      setStatus('data loaded');
+      log('✅ loadeddata');
     });
     
     video.addEventListener('canplay', () => {
-      console.log('✅ Video can start playing');
-      // Try to play immediately when ready
-      video.play().catch(e => console.log('❌ Auto-play failed:', e));
+      setStatus('can play');
+      log('✅ canplay');
+      video.play().then(()=>{ setStatus('playing'); log('▶ playing'); }).catch(e => { setStatus('autoplay blocked'); log('❌ autoplay failed', e?.name || e); });
     });
     
     video.addEventListener('canplaythrough', () => {
-      console.log('✅ Video can play through without buffering');
+      setStatus('can play through');
+      log('✅ canplaythrough');
     });
     
     video.addEventListener('error', (e) => {
-      console.log('❌ Video error:', e);
-      console.log('❌ Error code:', video.error?.code);
-      console.log('❌ Error message:', video.error?.message);
-      
-      // Try alternative approaches on error
+      setStatus('error');
+      log('❌ error code=', video.error?.code, 'message=', video.error?.message);
       if (video.error?.code === 4) {
-        console.log('🔄 Trying to reload video...');
+        setStatus('format not supported');
+        log('🔄 trying reload same src');
         video.src = './news_test_app_10-9-25.mp4';
         video.load();
       }
     });
     
-    video.addEventListener('stalled', () => {
-      console.log('⚠️ Video stalled');
-    });
+  video.addEventListener('stalled', () => { setStatus('stalled'); log('⚠️ stalled'); });
     
-    video.addEventListener('suspend', () => {
-      console.log('⚠️ Video suspended');
-    });
+  video.addEventListener('suspend', () => { setStatus('suspended'); log('⚠️ suspend'); });
     
-    video.addEventListener('abort', () => {
-      console.log('⚠️ Video aborted');
-    });
+  video.addEventListener('abort', () => { setStatus('aborted'); log('⚠️ abort'); });
     
     // Force video setup
     video.style.display = 'block';
     
     // Multiple attempts to load and play
     setTimeout(() => {
-      console.log('🔄 First load attempt...');
+      log('🔄 load attempt #1');
       video.load();
-      
       setTimeout(() => {
-        console.log('🔄 First play attempt...');
-        video.play().then(() => {
-          console.log('✅ Video playing successfully!');
-        }).catch(e => {
-          console.log('❌ First play failed:', e);
-          
-          // Second attempt with direct src
-          console.log('🔄 Trying direct src...');
-          video.src = 'news_test_app_10-9-25.mp4';
-          video.load();
-          
-          setTimeout(() => {
-            video.play().catch(e2 => {
-              console.log('❌ Second play failed:', e2);
-              console.log('📝 Manual play required - click the play button');
-            });
-          }, 1000);
-        });
+        log('🔄 play attempt #1');
+        video.play().then(() => { setStatus('playing'); log('▶ playing'); })
+          .catch(e => {
+            setStatus('manual play required');
+            log('❌ play failed #1', e?.name || e);
+            log('🔄 set direct src and retry');
+            video.src = 'news_test_app_10-9-25.mp4';
+            video.load();
+            setTimeout(() => {
+              video.play().then(()=>{ setStatus('playing'); log('▶ playing after direct src'); })
+                .catch(e2 => { setStatus('click play ▶'); log('❌ play failed #2', e2?.name || e2); });
+            }, 1000);
+          });
       }, 1500);
     }, 500);
+
+    // Periodic state sampler
+    setInterval(() => {
+      const info = {
+        readyState: readyStateNames[video.readyState] || video.readyState,
+        networkState: networkStateNames[video.networkState] || video.networkState,
+        currentTime: video.currentTime,
+        duration: video.duration,
+        paused: video.paused,
+        ended: video.ended,
+        src: video.currentSrc || video.src || '(none)'
+      };
+      log('ℹ️ state', info);
+    }, 5000);
+
+    // Retry button
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        setStatus('retrying…');
+        log('🔁 manual retry clicked');
+        video.pause();
+        video.load();
+        video.play().then(()=>{ setStatus('playing'); log('▶ playing after retry'); })
+          .catch(e => { setStatus('click play ▶'); log('❌ retry play failed', e?.name || e); });
+      });
+    }
     
     // Check video source accessibility
-    fetch('./news_test_app_10-9-25.mp4', { method: 'HEAD' })
+  fetch('./news_test_app_10-9-25.mp4', { method: 'HEAD' })
       .then(response => {
-        console.log('📁 Video file status:', response.status);
-        console.log('📁 Content-Type:', response.headers.get('content-type'));
-        console.log('📁 Content-Length:', response.headers.get('content-length'));
+    log('📁 HEAD status=', response.status, 'type=', response.headers.get('content-type'), 'bytes=', response.headers.get('content-length'));
       })
       .catch(e => {
-        console.log('❌ Cannot access video file:', e);
-        console.log('🔄 Trying without ./ prefix...');
+    log('❌ HEAD failed with ./ prefix', e?.name || e);
+    log('🔄 Trying without ./ prefix...');
         
-        fetch('news_test_app_10-9-25.mp4', { method: 'HEAD' })
+    fetch('news_test_app_10-9-25.mp4', { method: 'HEAD' })
           .then(response => {
-            console.log('📁 Video file found without prefix:', response.status);
+      log('📁 HEAD (no prefix) status=', response.status);
           })
           .catch(e2 => {
-            console.log('❌ Video file not accessible:', e2);
+      log('❌ HEAD failed (no prefix)', e2?.name || e2);
           });
       });
   </script>

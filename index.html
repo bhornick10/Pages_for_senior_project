@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Insight - The Fallocy Detector</title>
+  <title>Insight</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
 
@@ -20,15 +20,15 @@
       background-attachment: scroll;
       background-color: #1a1a2e;
     }
-    
+
     #background-video {
       position: fixed; /* Fixed positioning relative to viewport */
       right: 0; /* Flush against the right edge */
       top: 50%;
       transform: translateY(-50%);
       /* Always fit inside the window; scale back up when maximized */
-      width: 400px;
-      height: 600px;
+      width: min(45vw, 500px);
+      height: min(90vh, 600px);
       z-index: 20;
       object-fit: contain; /* Ensure full video visible within box */
       border-radius: 20px; 
@@ -82,6 +82,13 @@
     preload="auto"
     crossorigin="anonymous"
   ></video>
+
+  <header>
+    <div class="brand">
+      <b style="color:#93c5fd">INSIGHT</b>
+      <p style="color:#93c5fd">The Fallocy Detector</p>
+    </div>
+  </header>
 
 </body>
 </html>

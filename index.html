@@ -15,23 +15,24 @@
     body {
       background-image: url('news_app.png');
       background-size: contain;
-      background-position: left center; /* Move background to left so video on right is more visible */
+      background-position: left center; 
       background-repeat: no-repeat;
       background-attachment: scroll;
-      background-color: #1a1a2e; /* Add dark background color for better contrast */
+      background-color: #1a1a2e;
     }
     
     #background-video {
       position: fixed;
       right: 20px;
       bottom: 20px;
-      width: 400px; 
-      height: 300px;
+      width: 500px; 
+      height: 400px;
       z-index: 10; /* Higher z-index to make sure it's visible */
-      object-fit: cover; 
+      object-fit: contain; /* Changed to contain so we can see the full video */
       border-radius: 10px; 
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
-      border: 2px solid #fff; /* Add white border to make it more visible */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.8); 
+      border: 3px solid #fff; /* Thicker white border */
+      background: #000; /* Black background in case video doesn't load */
     }
     .brand {
       display: flex;
@@ -60,9 +61,10 @@
 </head>
 <body>
   <!-- background video (autoplays muted inline on mobile) -->
-  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls>
-    <source src="news_test_app_10-9-25.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto">
+    <source src="./news_test_app_10-9-25.mp4" type="video/mp4">
+    <p>Your browser does not support the video tag.</p>
+    <p>Video file: news_test_app_10-9-25.mp4</p>
   </video>
 
   <header>
@@ -85,21 +87,42 @@
       console.log('Video loading started');
     });
     
+    video.addEventListener('loadedmetadata', () => {
+      console.log('Video metadata loaded');
+      console.log('Duration:', video.duration);
+      console.log('Video width:', video.videoWidth);
+      console.log('Video height:', video.videoHeight);
+    });
+    
     video.addEventListener('canplay', () => {
       console.log('Video can start playing');
     });
     
     video.addEventListener('error', (e) => {
       console.log('Video error:', e);
+      console.log('Error details:', video.error);
+    });
+    
+    video.addEventListener('loadeddata', () => {
+      console.log('Video data loaded');
     });
     
     // Force video to be visible and try to play
     video.style.display = 'block';
-    video.play().catch(e => {
-      console.log('Autoplay failed:', e);
-      // If autoplay fails, show controls so user can manually play
-      video.controls = true;
-    });
+    
+    // Try to load the video explicitly
+    video.load();
+    
+    setTimeout(() => {
+      video.play().then(() => {
+        console.log('Video playing successfully');
+      }).catch(e => {
+        console.log('Autoplay failed:', e);
+        // If autoplay fails, make sure controls are visible
+        video.controls = true;
+        console.log('Controls enabled - try clicking play button');
+      });
+    }, 1000);
   </script>
 </body>
 </html>

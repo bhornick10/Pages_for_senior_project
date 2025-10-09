@@ -31,7 +31,7 @@
       z-index: 20;
       object-fit: cover; /* Fill the area completely */
       border-radius: 20px; 
-      box-shadow: 0 8px 30px rgba(17, 122, 207, 0.8); 
+      /* box-shadow: 0 8px 30px rgba(17, 122, 207, 0.8); */
       border: 2px solid rgba(221, 199, 199, 0.897);
       background: #2a2a4a; /* Match the blue background better */
     }
@@ -62,11 +62,13 @@
 </head>
 <body>
   <!-- background video (autoplays muted inline on mobile) -->
-  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="metadata">
+  <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="auto" crossorigin="anonymous">
+    <source src="./news_test_app_10-9-25.mp4" type="video/mp4; codecs=avc1.42E01E,mp4a.40.2">
     <source src="news_test_app_10-9-25.mp4" type="video/mp4">
+    <source src="./news_test_app_10-9-25.mp4" type="video/webm">
     <p style="color: white; padding: 20px; text-align: center;">
-      Video not loading? Chrome extension recordings often need conversion.<br>
-      Try converting to web-compatible MP4 using VLC or HandBrake.
+      Your browser cannot play this video format.<br>
+      Current file: news_test_app_10-9-25.mp4
     </p>
   </video>
 
@@ -83,49 +85,109 @@
   <footer></footer>
 
   <script>
-    // Debug video loading
+    // Enhanced video debugging
     const video = document.getElementById('background-video');
     
+    // More comprehensive event listeners
     video.addEventListener('loadstart', () => {
-      console.log('Video loading started');
+      console.log('✅ Video loading started');
     });
     
     video.addEventListener('loadedmetadata', () => {
-      console.log('Video metadata loaded');
+      console.log('✅ Video metadata loaded');
       console.log('Duration:', video.duration);
-      console.log('Video width:', video.videoWidth);
-      console.log('Video height:', video.videoHeight);
-    });
-    
-    video.addEventListener('canplay', () => {
-      console.log('Video can start playing');
-    });
-    
-    video.addEventListener('error', (e) => {
-      console.log('Video error:', e);
-      console.log('Error details:', video.error);
+      console.log('Video dimensions:', video.videoWidth, 'x', video.videoHeight);
+      console.log('Ready state:', video.readyState);
     });
     
     video.addEventListener('loadeddata', () => {
-      console.log('Video data loaded');
+      console.log('✅ Video data loaded');
     });
     
-    // Force video to be visible and try to play
+    video.addEventListener('canplay', () => {
+      console.log('✅ Video can start playing');
+      // Try to play immediately when ready
+      video.play().catch(e => console.log('❌ Auto-play failed:', e));
+    });
+    
+    video.addEventListener('canplaythrough', () => {
+      console.log('✅ Video can play through without buffering');
+    });
+    
+    video.addEventListener('error', (e) => {
+      console.log('❌ Video error:', e);
+      console.log('❌ Error code:', video.error?.code);
+      console.log('❌ Error message:', video.error?.message);
+      
+      // Try alternative approaches on error
+      if (video.error?.code === 4) {
+        console.log('🔄 Trying to reload video...');
+        video.src = './news_test_app_10-9-25.mp4';
+        video.load();
+      }
+    });
+    
+    video.addEventListener('stalled', () => {
+      console.log('⚠️ Video stalled');
+    });
+    
+    video.addEventListener('suspend', () => {
+      console.log('⚠️ Video suspended');
+    });
+    
+    video.addEventListener('abort', () => {
+      console.log('⚠️ Video aborted');
+    });
+    
+    // Force video setup
     video.style.display = 'block';
     
-    // Try to load the video explicitly
-    video.load();
-    
+    // Multiple attempts to load and play
     setTimeout(() => {
-      video.play().then(() => {
-        console.log('Video playing successfully');
-      }).catch(e => {
-        console.log('Autoplay failed:', e);
-        // If autoplay fails, make sure controls are visible
-        video.controls = true;
-        console.log('Controls enabled - try clicking play button');
+      console.log('🔄 First load attempt...');
+      video.load();
+      
+      setTimeout(() => {
+        console.log('🔄 First play attempt...');
+        video.play().then(() => {
+          console.log('✅ Video playing successfully!');
+        }).catch(e => {
+          console.log('❌ First play failed:', e);
+          
+          // Second attempt with direct src
+          console.log('🔄 Trying direct src...');
+          video.src = 'news_test_app_10-9-25.mp4';
+          video.load();
+          
+          setTimeout(() => {
+            video.play().catch(e2 => {
+              console.log('❌ Second play failed:', e2);
+              console.log('📝 Manual play required - click the play button');
+            });
+          }, 1000);
+        });
+      }, 1500);
+    }, 500);
+    
+    // Check video source accessibility
+    fetch('./news_test_app_10-9-25.mp4', { method: 'HEAD' })
+      .then(response => {
+        console.log('📁 Video file status:', response.status);
+        console.log('📁 Content-Type:', response.headers.get('content-type'));
+        console.log('📁 Content-Length:', response.headers.get('content-length'));
+      })
+      .catch(e => {
+        console.log('❌ Cannot access video file:', e);
+        console.log('🔄 Trying without ./ prefix...');
+        
+        fetch('news_test_app_10-9-25.mp4', { method: 'HEAD' })
+          .then(response => {
+            console.log('📁 Video file found without prefix:', response.status);
+          })
+          .catch(e2 => {
+            console.log('❌ Video file not accessible:', e2);
+          });
       });
-    }, 1000);
   </script>
 </body>
 </html>

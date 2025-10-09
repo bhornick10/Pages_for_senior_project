@@ -23,9 +23,9 @@
     
     #background-video {
       position: fixed;
-      right: 50%;
+      right: 10%; /* Move it to the right side */
       top: 50%;
-      transform: translate(50%, -50%); /* Center it perfectly */
+      transform: translateY(-50%); /* Only center vertically */
       width: 400px; 
       height: 600px;
       z-index: 20;
@@ -63,7 +63,7 @@
 <body>
   <!-- background video (autoplays muted inline on mobile) -->
   <video id="background-video" autoplay loop muted playsinline webkit-playsinline controls preload="metadata">
-    <source src="./news_test_app_web.mp4" type="video/mp4">
+    <source src="news_test_app_10-9-25.mp4" type="video/mp4">
     <p style="color: white; padding: 20px; text-align: center;">
       Video not loading? Chrome extension recordings often need conversion.<br>
       Try converting to web-compatible MP4 using VLC or HandBrake.
